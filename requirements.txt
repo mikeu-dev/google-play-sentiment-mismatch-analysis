@@ -1,0 +1,13 @@
+# Versi yang dipakai saat pipeline diuji (Python 3.11). Setelah menjalankan
+# ulang di mesin sendiri, timpa dengan hasil `pip freeze > requirements.txt`.
+pandas==3.0.6
+numpy==2.4.6
+scikit-learn==1.9.1
+imbalanced-learn==0.14.2
+nltk==3.10.3
+statsmodels==0.15.0
+scipy==1.17.1
+matplotlib==3.11.2
+seaborn==0.13.2
+joblib==1.6.0
+kagglehub

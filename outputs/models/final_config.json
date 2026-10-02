@@ -1,0 +1,30 @@
+{
+  "best_algo_cv": "svm",
+  "configs": {
+    "nb": {
+      "vektorisasi": "count",
+      "lemmatization": true,
+      "ros": true,
+      "params": {
+        "alpha": 1.0
+      }
+    },
+    "svm": {
+      "vektorisasi": "tfidf",
+      "lemmatization": true,
+      "ros": true,
+      "params": {
+        "C": 0.1
+      }
+    },
+    "lr": {
+      "vektorisasi": "tfidf",
+      "lemmatization": false,
+      "ros": true,
+      "params": {
+        "C": 1
+      }
+    }
+  },
+  "catatan": "Model terbaik dipilih dari f1_macro CV; lihat mcnemar.csv untuk signifikansi."
+}

@@ -1,0 +1,4 @@
+algoritma,kode,vektorisasi,lemmatization,ros,parameter_terpilih,f1_macro_cv,accuracy_uji,balanced_accuracy_uji,f1_macro_uji,waktu_latih_detik_median,waktu_prediksi_detik
+Multinomial Naive Bayes,nb,count,True,True,{'alpha': 1.0},0.5948,0.6576,0.5943,0.5938,0.3805,0.0668
+Linear SVM,svm,tfidf,True,True,{'C': 0.1},0.6072,0.6816,0.6129,0.6124,0.446,0.077
+Logistic Regression,lr,tfidf,False,True,{'C': 1},0.6043,0.6745,0.6197,0.6169,2.8932,0.0809

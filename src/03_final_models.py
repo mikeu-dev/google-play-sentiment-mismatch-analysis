@@ -30,6 +30,8 @@ from common import (ALGO_NAMES, BEST_JSON, CLASSES, FIGURES, MODELS, PARAM_GRID,
                     TEXT_COLS, ensure_dirs, load_clean, make_cv, make_pipeline, save_json,
                     save_table, split)
 
+N_TIMING_RUNS = 5
+
 
 def best_configs():
     path = TABLES / "ablasi_24_konfigurasi.csv"
@@ -92,9 +94,13 @@ def main():
         # Waktu latih diukur ulang pada model akhir agar tidak terpengaruh paralelisme CV
         final = make_pipeline(algo, cfg["vektorisasi"], bool(cfg["ros"]))
         final.set_params(**gs.best_params_)
-        t0 = time.perf_counter()
-        final.fit(train[text_col], y_train)
-        fit_time = time.perf_counter() - t0
+        # Median dari beberapa kali latih, karena satu pengukuran waktu terlalu bising
+        times = []
+        for _ in range(N_TIMING_RUNS):
+            t0 = time.perf_counter()
+            final.fit(train[text_col], y_train)
+            times.append(time.perf_counter() - t0)
+        fit_time = float(np.median(times))
         t0 = time.perf_counter()
         pred = final.predict(test[text_col])
         pred_time = time.perf_counter() - t0
@@ -110,7 +116,7 @@ def main():
             "accuracy_uji": accuracy_score(y_test, pred),
             "balanced_accuracy_uji": balanced_accuracy_score(y_test, pred),
             "f1_macro_uji": f1_score(y_test, pred, average="macro"),
-            "waktu_latih_detik": fit_time, "waktu_prediksi_detik": pred_time,
+            "waktu_latih_detik_median": fit_time, "waktu_prediksi_detik": pred_time,
         })
 
         rep = pd.DataFrame(classification_report(y_test, pred, labels=CLASSES, output_dict=True)).T

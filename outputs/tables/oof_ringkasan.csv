@@ -1,0 +1,12 @@
+ukuran,nilai
+Model,Logistic Regression
+Jumlah ulasan dianalisis,11244
+Tingkat kesesuaian OOF (%),67.16
+Mismatch OOF (%),32.84
+Balanced accuracy OOF,0.6049
+F1-macro OOF,0.6045
+Ulasan bintang 4-5,4762
+Bintang 4-5 diprediksi negative (keluhan tersembunyi),409
+Keluhan tersembunyi (% dari bintang 4-5),8.59
+"Keluhan tersembunyi, keyakinan tinggi",18
+Akurasi OOF (cek),0.6716

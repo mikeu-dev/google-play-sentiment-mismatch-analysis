@@ -1,0 +1,11 @@
+langkah,dikeluarkan,sisa
+Data mentah,0,12495
+Konten kosong (NaN),0,12495
+Duplikat reviewId,0,12495
+Teks kosong setelah dibersihkan (n_token == 0),114,12381
+Duplikat teks bersih (identik),1137,11244
+"(info) ulasan dengan < 3 token, tetap dipakai",1848,11244
+(info) kelompok teks duplikat,179,
+(info) kelompok duplikat dengan rating_class berbeda,62,
+Data latih,,8995
+Data uji,,2249

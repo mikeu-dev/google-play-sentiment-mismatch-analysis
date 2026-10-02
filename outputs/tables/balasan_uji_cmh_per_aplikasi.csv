@@ -1,0 +1,3 @@
+perbandingan,jumlah_aplikasi,odds_ratio_mh,or_ci95_bawah,or_ci95_atas,statistik_cmh,p_value
+keluhan_tersembunyi vs bintang_1_2,15,0.133937,0.102135,0.175642,321.341672,0.0
+keluhan_tersembunyi vs bintang_4_5_positif,15,2.184419,1.612688,2.958841,28.170057,0.0

@@ -9,11 +9,14 @@ Output:
   outputs/tables/balasan_per_kelompok.csv          [ISI-11]
   outputs/tables/balasan_per_aplikasi.csv          [ISI-11]
   outputs/tables/balasan_uji_chi_square.csv        [ISI-11]
+  outputs/tables/balasan_uji_cmh_per_aplikasi.csv  [ISI-11] uji Cochran-Mantel-Haenszel,
+      dikendalikan per aplikasi karena kebijakan membalas tiap pengembang berbeda
 Jika kolom replyContent tidak ada, hanya ditulis balasan_tidak_tersedia.csv.
 """
 import numpy as np
 import pandas as pd
 from scipy.stats import chi2_contingency
+from statsmodels.stats.contingency_tables import StratifiedTable
 
 from common import ensure_dirs, load_oof, save_table
 
@@ -70,6 +73,27 @@ def main():
     tests += [chi2(d, a, b) for a, b in [("keluhan_tersembunyi", "bintang_1_2"),
                                          ("keluhan_tersembunyi", "bintang_4_5_positif")]]
     save_table(pd.DataFrame(tests).round(6), "balasan_uji_chi_square.csv")
+
+    if "app_id" in d.columns:
+        cmh = [cmh_test(d, "keluhan_tersembunyi", b) for b in ["bintang_1_2", "bintang_4_5_positif"]]
+        save_table(pd.DataFrame(cmh).round(6), "balasan_uji_cmh_per_aplikasi.csv")
+        print(pd.DataFrame(cmh).round(4).to_string(index=False))
+
+
+def cmh_test(d, a, b):
+    """Odds ratio gabungan (Mantel-Haenszel) kelompok a terhadap b, dikendalikan per aplikasi."""
+    tables = []
+    for _, g in d[d["kelompok"].isin([a, b])].groupby("app_id"):
+        t = pd.crosstab(g["kelompok"] == a, g["has_reply"]).reindex(index=[True, False],
+                                                                     columns=[True, False], fill_value=0)
+        if (t.sum(axis=1) > 0).all():
+            tables.append(t.values)
+    st = StratifiedTable(tables)
+    lo, hi = st.oddsratio_pooled_confint()
+    test = st.test_null_odds(correction=True)
+    return {"perbandingan": f"{a} vs {b}", "jumlah_aplikasi": len(tables),
+            "odds_ratio_mh": st.oddsratio_pooled, "or_ci95_bawah": lo, "or_ci95_atas": hi,
+            "statistik_cmh": test.statistic, "p_value": test.pvalue}
 
 
 if __name__ == "__main__":

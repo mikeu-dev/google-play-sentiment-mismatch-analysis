@@ -1,0 +1,5 @@
+rating_class,test,train,total,persen
+negative,926,3702,4628,41.16
+neutral,371,1483,1854,16.49
+positive,952,3810,4762,42.35
+total,2249,8995,11244,100.0

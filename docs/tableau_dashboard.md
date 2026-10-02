@@ -21,18 +21,18 @@ Angka di tampilan Ringkasan harus sama dengan
 ## Lima tampilan
 
 1. **Ringkasan.** KPI: jumlah ulasan, `Tingkat Kesesuaian`, jumlah per
-   `Mismatch Type` (diagram batang), dan precision validasi per kelompok
-   (diketik dari `validasi_precision.csv`, atau dari `Human Label` dengan
-   filter `Is Validated = True`).
+   `Mismatch Type` (diagram batang), dan jumlah kandidat per
+   `Confidence Tier`. Tanpa validasi manual, kolom `Human Label` tidak ada di CSV.
 2. **Peta rating terhadap prediksi.** Heatmap: Rows `Score` (1-5),
    Columns `Pred`, Color dan Label `CNT(Review Id)`. Tambahkan persentase
    per baris (Quick Table Calculation, Percent of Total, Compute Using
    Table Across).
 3. **Antrean prioritas.** Tabel teks dengan filter
    `Mismatch Type = keluhan_tersembunyi`; kolom `Content`, `Score`,
-   `Proba Neg`, `Confidence Tier`, `App Id`, `Review Date`, `Human Label`.
+   `Proba Neg`, `Confidence Tier`, `App Id`, `Review Date`. Kolom `Is Priority`
+   (keluhan tersembunyi berkeyakinan sedang atau tinggi, 126 ulasan) bisa dipakai sebagai filter.
    Urutkan menurun menurut `Proba Neg`. Filter interaktif: `App Id`,
-   `Confidence Tier`, `Is Validated`.
+   `Confidence Tier`.
 4. **Mismatch per aplikasi.** Diagram batang `Tingkat Keluhan
    Tersembunyi` per `App Id`; tampilan kedua berupa garis per
    `Review Month` (atau `App Version`) jika kolomnya terisi.

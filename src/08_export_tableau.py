@@ -35,7 +35,13 @@ def main():
     if "review_date" in df.columns:
         df["review_month"] = pd.to_datetime(df["review_date"], errors="coerce").dt.to_period("M").astype(str)
 
-    out = df[[c for c in COLS if c in df.columns]]
+    if not df["is_validated"].any():
+        # Tanpa validasi manual, kolom label dikosongkan agar tidak membingungkan di Tableau
+        df = df.drop(columns=["human_label", "is_validated", "validation_group"])
+    df["star_group"] = df["score"].map(lambda s: "1-2" if s <= 2 else "3" if s == 3 else "4-5")
+    df["confidence_tier_order"] = df["confidence_tier"].map({"tinggi": 1, "sedang": 2, "rendah": 3})
+    df["is_priority"] = df["mismatch_type"].eq("keluhan_tersembunyi") & df["confidence_tier"].isin(["tinggi", "sedang"])
+    out = df[[c for c in COLS + ["star_group", "confidence_tier_order", "is_priority"] if c in df.columns]]
     path = TABLEAU / "tableau_reviews.csv"
     out.to_csv(path, index=False)
     print(f"  -> {path.relative_to(ROOT)} ({len(out)} baris, {len(out.columns)} kolom)")

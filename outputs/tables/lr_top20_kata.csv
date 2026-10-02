@@ -1,0 +1,61 @@
+kelas,peringkat,kata,koefisien
+negative,1,not,3.2476
+negative,2,useless,3.146
+negative,3,uninstalled,2.49
+negative,4,no,2.2774
+negative,5,lost,2.0408
+negative,6,worst,1.9956
+negative,7,account,1.9838
+negative,8,uninstall,1.9759
+negative,9,not sync,1.9404
+negative,10,uninstalling,1.9122
+negative,11,no thanks,1.8628
+negative,12,not good,1.8514
+negative,13,poor,1.8175
+negative,14,not even,1.7881
+negative,15,waste,1.7131
+negative,16,worse,1.6928
+negative,17,complicated,1.6925
+negative,18,completely,1.6762
+negative,19,dont,1.6008
+negative,20,horrible,1.5918
+neutral,1,not,2.3909
+neutral,2,ok,1.6837
+neutral,3,would,1.6683
+neutral,4,otherwise,1.6582
+neutral,5,app however,1.6353
+neutral,6,love app,1.6304
+neutral,7,till,1.6187
+neutral,8,progress,1.612
+neutral,9,gets,1.5684
+neutral,10,way track,1.5412
+neutral,11,less,1.5372
+neutral,12,dailies,1.5154
+neutral,13,passed,1.5079
+neutral,14,without premium,1.5066
+neutral,15,want use,1.5008
+neutral,16,happened,1.4835
+neutral,17,app cannot,1.4641
+neutral,18,record,1.4526
+neutral,19,average,1.4491
+neutral,20,make offline,1.4439
+positive,1,love,3.7783
+positive,2,best,3.4641
+positive,3,great,3.4053
+positive,4,easy,3.0473
+positive,5,amazing,2.5772
+positive,6,helpful,2.5171
+positive,7,helps,2.4611
+positive,8,perfect,2.2749
+positive,9,life,2.1898
+positive,10,excellent,2.1405
+positive,11,awesome,2.0577
+positive,12,fun,1.997
+positive,13,good,1.9891
+positive,14,exactly,1.921
+positive,15,useful,1.839
+positive,16,thanks,1.749
+positive,17,highly,1.6738
+positive,18,simple,1.5649
+positive,19,helped,1.5304
+positive,20,productive,1.4947

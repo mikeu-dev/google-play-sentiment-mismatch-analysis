@@ -1,0 +1,25 @@
+algoritma,nama_algoritma,vektorisasi,lemmatization,ros,accuracy_mean,accuracy_std,balanced_accuracy_mean,balanced_accuracy_std,f1_macro_mean,f1_macro_std,fit_time_mean,fit_time_std
+lr,Logistic Regression,tfidf,False,True,0.6729,0.0115,0.6047,0.0112,0.6043,0.0108,0.6472,0.0797
+lr,Logistic Regression,tfidf,True,True,0.6703,0.0094,0.6044,0.009,0.6038,0.0087,0.5769,0.0417
+nb,Multinomial Naive Bayes,count,True,True,0.6623,0.01,0.5951,0.0108,0.5948,0.0102,0.359,0.049
+nb,Multinomial Naive Bayes,count,False,True,0.6604,0.0072,0.5923,0.003,0.5922,0.0034,0.495,0.0781
+nb,Multinomial Naive Bayes,tfidf,True,True,0.6461,0.0106,0.5925,0.0135,0.5907,0.0118,0.309,0.0368
+nb,Multinomial Naive Bayes,tfidf,False,True,0.6461,0.0057,0.5918,0.0074,0.5903,0.0062,0.3594,0.0303
+lr,Logistic Regression,count,True,True,0.6628,0.0098,0.587,0.0075,0.5869,0.0075,0.6175,0.047
+svm,Linear SVM,tfidf,True,True,0.6598,0.0148,0.5857,0.0149,0.5859,0.0147,0.4625,0.0545
+lr,Logistic Regression,count,True,False,0.6872,0.0112,0.5884,0.0107,0.5851,0.0111,0.7058,0.1126
+lr,Logistic Regression,count,False,True,0.6607,0.0101,0.5842,0.0096,0.5842,0.0092,0.746,0.087
+lr,Logistic Regression,count,False,False,0.6874,0.005,0.5876,0.0037,0.5838,0.004,0.6227,0.0744
+nb,Multinomial Naive Bayes,count,False,False,0.6915,0.0056,0.5881,0.0052,0.5831,0.0059,0.5282,0.1254
+svm,Linear SVM,tfidf,False,True,0.6549,0.0125,0.5816,0.0119,0.5818,0.0115,0.4184,0.0114
+nb,Multinomial Naive Bayes,count,True,False,0.6904,0.0081,0.5859,0.0061,0.5802,0.0066,0.3815,0.0646
+svm,Linear SVM,tfidf,False,False,0.6897,0.0065,0.5832,0.0038,0.5762,0.004,0.408,0.0532
+svm,Linear SVM,tfidf,True,False,0.6911,0.0138,0.5817,0.0111,0.5734,0.0108,0.3655,0.0249
+svm,Linear SVM,count,True,False,0.6589,0.0116,0.5706,0.0112,0.5692,0.0113,0.9662,0.0997
+svm,Linear SVM,count,True,True,0.6438,0.0103,0.568,0.0107,0.5681,0.0106,2.9176,0.2804
+svm,Linear SVM,count,False,False,0.6538,0.0103,0.5664,0.0099,0.5649,0.01,0.9655,0.0633
+svm,Linear SVM,count,False,True,0.6386,0.0113,0.5626,0.0108,0.5626,0.0103,3.0305,0.3769
+lr,Logistic Regression,tfidf,False,False,0.7167,0.0031,0.5864,0.0012,0.561,0.0043,0.5487,0.0706
+lr,Logistic Regression,tfidf,True,False,0.7127,0.0028,0.582,0.0033,0.5557,0.0056,0.5128,0.0326
+nb,Multinomial Naive Bayes,tfidf,False,False,0.7128,0.0056,0.5694,0.0049,0.5189,0.0054,0.389,0.0539
+nb,Multinomial Naive Bayes,tfidf,True,False,0.7081,0.0096,0.5658,0.0081,0.5162,0.0085,0.3863,0.0395

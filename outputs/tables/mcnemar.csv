@@ -1,0 +1,4 @@
+model_a,model_b,a_benar_b_salah,a_salah_b_benar,uji,statistik,p_value,signifikan_0.05
+Linear SVM,Multinomial Naive Bayes,183,129,chi-square,9.0032,0.0027,True
+Linear SVM,Logistic Regression,136,120,chi-square,0.8789,0.3485,False
+Logistic Regression,Multinomial Naive Bayes,208,170,chi-square,3.6217,0.057,False

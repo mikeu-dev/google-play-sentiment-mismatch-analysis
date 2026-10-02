@@ -1,0 +1,5 @@
+faktor,perbandingan,selisih_f1_rata2,selisih_f1_min,selisih_f1_max,naik,tidak_berubah,turun,arah
+vektorisasi,tfidf - count,-0.0081,-0.0642,0.0201,5,3,4,turun
+lemmatization,True - False,0.0005,-0.0054,0.0055,1,10,1,tidak berubah
+ros,True - False,0.0231,-0.0023,0.0745,8,4,0,naik
+negasi,dipertahankan - dibuang,0.0194,0.0194,0.0194,1,0,0,naik

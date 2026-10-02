@@ -1,0 +1,4 @@
+perbandingan,chi2,dof,p_value
+tiga kelompok,932.430679,2,0.0
+keluhan_tersembunyi vs bintang_1_2,105.843788,1,0.0
+keluhan_tersembunyi vs bintang_4_5_positif,9.116654,1,0.002533

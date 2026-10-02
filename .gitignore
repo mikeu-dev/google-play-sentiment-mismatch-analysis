@@ -52,3 +52,12 @@ Thumbs.db
 .kaggle/
 *.code-workspace
 .agents
+
+# Pipeline skripsi: data mentah dan hasil antara tidak di-commit,
+# tetapi lembar anotasi (label manual) dan tabel output WAJIB di-commit.
+data/raw/
+data/processed/
+outputs/models/*.joblib
+!data/annotation/*.csv
+!outputs/tables/*.csv
+!outputs/tableau/*.csv

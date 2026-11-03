@@ -25,7 +25,7 @@ src/05_sampling_anotasi.py     OPSIONAL (Tahap 5): 400 sampel dan lembar anotasi
 src/06_validasi.py             OPSIONAL (Tahap 5): precision (CI Wilson 95%), perkiraan jumlah, kappa; butuh label manual
 src/07_reply_rate.py           Tahap 6: tingkat balasan pengembang + chi-square
 src/08_export_tableau.py       Tahap 7: CSV untuk Tableau
-outputs/tables/  outputs/figures/  outputs/tableau/  outputs/models/
+outputs/tables/  outputs/figures/  outputs/tableau/  outputs/models/   (outputs/tableau/ dibuat oleh 08 dan tidak di-commit)
 docs/audit_pipeline.md         temuan audit notebook lama (kebocoran TF-IDF, dll.)
 docs/pedoman_anotasi.md        pedoman pelabelan manual (hanya bila validasi manual dilakukan)
 docs/tableau_dashboard.md      cara membangun lima tampilan Tableau

@@ -46,7 +46,6 @@ python src/04_oof_mismatch.py            # analisis utama: Logistic Regression
 python src/04_oof_mismatch.py --algo svm # pemeriksaan kekokohan: Linear SVM terkalibrasi (tidak menimpa hasil utama)
 python src/07_reply_rate.py
 python src/08_export_tableau.py
-python src/09_figures.py                 # cadangan: gambar Matplotlib; tidak dipakai di skripsi (penomorannya berbeda dari naskah)
 ```
 
 `run_all.sh` menjalankan urutan yang sama. Hasil SVM disimpan dengan akhiran

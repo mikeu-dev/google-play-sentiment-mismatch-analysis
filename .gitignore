@@ -60,4 +60,3 @@ data/processed/
 outputs/models/*.joblib
 !data/annotation/*.csv
 !outputs/tables/*.csv
-!outputs/tableau/*.csv

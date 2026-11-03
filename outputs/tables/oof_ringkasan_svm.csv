@@ -1,0 +1,12 @@
+ukuran,nilai
+Model,Linear SVM
+Jumlah ulasan dianalisis,11244
+Tingkat kesesuaian OOF (%),68.73
+Mismatch OOF (%),31.27
+Balanced accuracy OOF,0.6019
+F1-macro OOF,0.6016
+Ulasan bintang 4-5,4762
+Bintang 4-5 diprediksi negative (keluhan tersembunyi),466
+Keluhan tersembunyi (% dari bintang 4-5),9.79
+"Keluhan tersembunyi, keyakinan tinggi",10
+Akurasi OOF (cek),0.6873

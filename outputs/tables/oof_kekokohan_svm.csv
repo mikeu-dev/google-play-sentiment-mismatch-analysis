@@ -1,0 +1,7 @@
+ukuran,nilai
+Model pembanding,Linear SVM
+Tingkat kesesuaian OOF model pembanding (%),68.73
+"Kandidat keluhan tersembunyi, model pembanding",466
+"Kandidat keluhan tersembunyi, Logistic Regression",409
+Ditandai oleh kedua model,329
+Kesepakatan (% dari kandidat Logistic Regression),80.4

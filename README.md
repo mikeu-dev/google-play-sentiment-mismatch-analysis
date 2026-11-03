@@ -3,7 +3,7 @@
 Proyek ini membandingkan Multinomial Naive Bayes, Linear SVM, dan Logistic
 Regression untuk menebak sentimen ulasan Google Play dari teksnya, lalu
 memakai prediksi *out-of-fold* untuk menemukan ulasan yang rating bintangnya
-tidak sesuai dengan isinya. Kandidat *mismatch* divalidasi secara manual.
+tidak sesuai dengan isinya. Ulasan yang ditandai dilaporkan sebagai *kandidat* ketidaksesuaian dan diperiksa secara tidak langsung (tingkat keyakinan model, model pembanding, dan tingkat balasan pengembang). **Validasi manual tidak dilakukan** dan hanya tersedia sebagai langkah opsional.
 
 Dataset: [Google Play Store Reviews](https://www.kaggle.com/datasets/prakharrathi25/google-play-store-reviews)
 (12.495 ulasan). Label sentimen diturunkan dari rating: 1-2 negative,
@@ -14,20 +14,20 @@ Dataset: [Google Play Store Reviews](https://www.kaggle.com/datasets/prakharrath
 ```text
 data/raw/reviews.csv           dataset mentah (diunduh otomatis lewat kagglehub bila belum ada)
 data/processed/                hasil antara (tidak di-commit)
-data/annotation/               lembar anotasi manual (WAJIB di-commit)
+data/annotation/               lembar anotasi manual (OPSIONAL, tidak dipakai; label masih kosong)
 src/common.py                  SEED, path, ambang, rentang Grid Search, pipeline
 src/preprocessing.py           pembersih teks (negasi, lemmatization dengan POS tag)
 src/01_preprocess.py           Tahap 1-2: pembersihan, duplikat, pembagian latih/uji
 src/02_ablation.py             Tahap 3: ablasi 24 konfigurasi (5-fold) + negasi
 src/03_final_models.py         Tahap 3: Grid Search, evaluasi uji, McNemar, confusion matrix
 src/04_oof_mismatch.py         Tahap 4: prediksi out-of-fold dan tipe mismatch
-src/05_sampling_anotasi.py     Tahap 5: 400 sampel dan lembar anotasi
-src/06_validasi.py             Tahap 5: precision (CI Wilson 95%), perkiraan jumlah, kappa
+src/05_sampling_anotasi.py     OPSIONAL (Tahap 5): 400 sampel dan lembar anotasi; tidak dijalankan
+src/06_validasi.py             OPSIONAL (Tahap 5): precision (CI Wilson 95%), perkiraan jumlah, kappa; butuh label manual
 src/07_reply_rate.py           Tahap 6: tingkat balasan pengembang + chi-square
 src/08_export_tableau.py       Tahap 7: CSV untuk Tableau
 outputs/tables/  outputs/figures/  outputs/tableau/  outputs/models/
 docs/audit_pipeline.md         temuan audit notebook lama (kebocoran TF-IDF, dll.)
-docs/pedoman_anotasi.md        pedoman pelabelan manual (lampiran skripsi)
+docs/pedoman_anotasi.md        pedoman pelabelan manual (hanya bila validasi manual dilakukan)
 docs/tableau_dashboard.md      cara membangun lima tampilan Tableau
 ```
 
@@ -42,15 +42,23 @@ pip install -r requirements.txt
 python src/01_preprocess.py
 python src/02_ablation.py
 python src/03_final_models.py
-python src/04_oof_mismatch.py          # default Logistic Regression; --algo nb|svm
-python src/05_sampling_anotasi.py      # lalu isi label di data/annotation/ (lihat docs/pedoman_anotasi.md)
-python src/06_validasi.py
+python src/04_oof_mismatch.py            # analisis utama: Logistic Regression
+python src/04_oof_mismatch.py --algo svm # pemeriksaan kekokohan: Linear SVM terkalibrasi (tidak menimpa hasil utama)
 python src/07_reply_rate.py
 python src/08_export_tableau.py
+python src/09_figures.py                 # cadangan: gambar Matplotlib; tidak dipakai di skripsi (penomorannya berbeda dari naskah)
 ```
 
-`run_all.sh` menjalankan urutan yang sama. `05` menolak menimpa lembar
-anotasi yang sudah ada (pakai `--force` hanya bila ingin mengulang).
+`run_all.sh` menjalankan urutan yang sama. Hasil SVM disimpan dengan akhiran
+`_svm` (misalnya `oof_ringkasan_svm.csv` dan `oof_kekokohan_svm.csv`) sehingga
+tidak menimpa hasil Logistic Regression.
+
+**Validasi manual (opsional, tidak dilakukan dalam skripsi ini).** Jika suatu
+saat diperlukan: jalankan `src/05_sampling_anotasi.py`, isi kolom `label` di
+`data/annotation/` mengikuti `docs/pedoman_anotasi.md`, lalu jalankan
+`src/06_validasi.py` dan ulangi `src/08_export_tableau.py`. Skrip `05` menolak
+menimpa lembar anotasi yang sudah ada (pakai `--force` hanya bila ingin
+mengulang). Skrip `08` otomatis menghilangkan kolom label bila belum ada.
 
 Bila NLTK tidak bisa mengunduh data di belakang proxy, set
 `NLTK_ALLOW_PROXIED_URLOPEN=1`. Path dataset bisa diganti dengan variabel
@@ -64,7 +72,7 @@ lingkungan `REVIEWS_CSV`.
 | Pembagian data | 80/20 stratified; ablasi 5-fold pada data latih | `common.TEST_SIZE`, `N_FOLDS` | 3.2.1 |
 | Rentang Grid Search | NB `alpha` 0,1/0,5/1,0; SVM dan LR `C` 0,1/1/10 | `common.PARAM_GRID` | 3.2.5 |
 | Ambang keyakinan | tinggi >= 0,80; sedang 0,60-0,79; rendah < 0,60 | `common.TIER_HIGH`, `TIER_MED` | 3.4.2 |
-| Sampel validasi | 150 / 75 / 75 / 100 (kontrol); 100 untuk pelabel kedua | `common.SAMPLE_SIZES` | 3.4.3 |
+| Sampel validasi manual | 150 / 75 / 75 / 100 (kontrol); 100 untuk pelabel kedua. **Tidak dipakai** (opsional) | `common.SAMPLE_SIZES` | 3.4.3 |
 | Kolom balasan pengembang | dicek otomatis; lihat `outputs/tables/kolom_dataset.csv` | `07_reply_rate.py` | 3.4.6 |
 
 ## Dari skrip ke penanda `[ISI-n]` di naskah
@@ -72,7 +80,7 @@ lingkungan `REVIEWS_CSV`.
 | Penanda | File output |
 | --- | --- |
 | `[ISI-1]` | `model_akhir.csv` (baris model terbaik) |
-| `[ISI-2]` | `oof_ringkasan.csv`, `validasi_precision.csv` |
+| `[ISI-2]` | `oof_ringkasan.csv`, `oof_kekokohan_svm.csv`, `balasan_per_kelompok.csv` (tanpa validasi manual) |
 | `[ISI-3]` | `data_cleaning.csv`, `distribusi_kelas.csv` |
 | `[ISI-4]` | `model_akhir.csv` |
 | `[ISI-5]` | `ablasi_24_konfigurasi.csv`, `ablasi_negasi.csv` |
@@ -80,10 +88,10 @@ lingkungan `REVIEWS_CSV`.
 | `[ISI-7]` | `classification_report_*.csv`, `figures/confusion_matrix_*.png`, `lr_top20_kata.csv`, `figures/lr_top20_kata.png` |
 | `[ISI-8]` | `grid_search.csv` |
 | `[ISI-9]` | `oof_ringkasan.csv`, `oof_tipe_mismatch.csv`, `oof_rating_vs_prediksi.csv` |
-| `[ISI-10]` | `validasi_precision.csv`, `validasi_precision_per_tier.csv`, `validasi_perkiraan_jumlah.csv`, `validasi_kappa.csv` |
+| `[ISI-10]` | tidak dipakai (hanya ada bila validasi manual dilakukan: `validasi_*.csv`) |
 | `[ISI-11]` | `balasan_per_kelompok.csv`, `balasan_uji_chi_square.csv` (atau `balasan_tidak_tersedia.csv`) |
-| `[ISI-12]` | `outputs/tableau/tableau_reviews.csv` + `docs/tableau_dashboard.md` |
-| `[ISI-13]` | `validasi_contoh.csv` |
+| `[ISI-12]` | `outputs/tableau/tableau_reviews.csv` + `docs/tableau_dashboard.md` (Gambar 4.1–4.4); `antrean_prioritas.csv` (Tabel 4.6) |
+| `[ISI-13]` | tidak dipakai (bergantung pada validasi manual); Tabel 4.6 memakai `antrean_prioritas.csv` |
 | `[ISI-15]` | `ablasi_pengaruh_faktor.csv` (selisih F1-macro; ambang "tidak berubah" ±0,005) |
 
 Semua file tabel ada di `outputs/tables/` kecuali disebut lain. Salin angka

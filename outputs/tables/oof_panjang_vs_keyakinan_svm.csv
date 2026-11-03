@@ -1,0 +1,7 @@
+kelompok,variabel,n,spearman_rho,p_value
+semua,n_char,11244,-0.1504,0.0
+semua,n_token,11244,-0.1433,0.0
+mismatch,n_char,3516,-0.017,0.3143
+mismatch,n_token,3516,-0.0154,0.3611
+sesuai,n_char,7728,-0.1769,0.0
+sesuai,n_token,7728,-0.1677,0.0

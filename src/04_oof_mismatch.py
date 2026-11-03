@@ -79,8 +79,12 @@ def main():
     out["confidence_tier"] = out["confidence"].apply(confidence_tier)
     out["is_mismatch"] = out["pred"] != out["rating_class"]
     out["mismatch_type"] = [mismatch_type(s, p) for s, p in zip(out["score"], out["pred"])]
-    out.to_csv(OOF_CSV, index=False)
-    print(f"  -> {OOF_CSV.relative_to(ROOT)}")
+    # Hasil Logistic Regression (analisis utama) memakai nama berkas tanpa akhiran; model lain diberi
+    # akhiran agar tidak menimpa hasil utama.
+    suffix = "" if args.algo == "lr" else f"_{args.algo}"
+    oof_path = OOF_CSV if args.algo == "lr" else OOF_CSV.with_name(f"oof_predictions{suffix}.csv")
+    out.to_csv(oof_path, index=False)
+    print(f"  -> {oof_path.relative_to(ROOT)}")
 
     hi = out[out["score"] >= 4]
     hidden = hi[hi["pred"] == "negative"]
@@ -97,24 +101,44 @@ def main():
         ("Keluhan tersembunyi, keyakinan tinggi", int((hidden["confidence_tier"] == "tinggi").sum())),
         ("Akurasi OOF (cek)", round(accuracy_score(y, out["pred"]), 4)),
     ], columns=["ukuran", "nilai"])
-    save_table(summary, "oof_ringkasan.csv")
+    save_table(summary, f"oof_ringkasan{suffix}.csv")
     print(summary.to_string(index=False))
 
     tipe = pd.crosstab(out["mismatch_type"], out["confidence_tier"], margins=True, margins_name="total")
     tipe = tipe.reindex(index=MISMATCH_ORDER + ["total"],
                         columns=["tinggi", "sedang", "rendah", "total"], fill_value=0)
     tipe["persen_dari_semua"] = (tipe["total"] / len(out) * 100).round(2)
-    save_table(tipe.reset_index(), "oof_tipe_mismatch.csv")
+    save_table(tipe.reset_index(), f"oof_tipe_mismatch{suffix}.csv")
 
     save_table(pd.crosstab(out["score"], out["pred"]).reindex(columns=CLASSES, fill_value=0).reset_index(),
-               "oof_rating_vs_prediksi.csv")
+               f"oof_rating_vs_prediksi{suffix}.csv")
 
     rows = []
     for name, sub in [("semua", out), ("mismatch", out[out["is_mismatch"]]), ("sesuai", out[~out["is_mismatch"]])]:
         for col in ["n_char", "n_token"]:
             rho, p = spearmanr(sub[col], sub["confidence"])
             rows.append({"kelompok": name, "variabel": col, "n": len(sub), "spearman_rho": rho, "p_value": p})
-    save_table(pd.DataFrame(rows).round(4), "oof_panjang_vs_keyakinan.csv")
+    save_table(pd.DataFrame(rows).round(4), f"oof_panjang_vs_keyakinan{suffix}.csv")
+
+    if args.algo != "lr" and OOF_CSV.exists():
+        # Kekokohan lintas model: berapa kandidat keluhan tersembunyi Logistic Regression yang juga
+        # ditandai oleh model ini
+        ref = pd.read_csv(OOF_CSV).set_index("review_id")
+        mine = out.set_index("review_id")
+        both = ref.index.intersection(mine.index)
+        ref_k = set(ref.loc[both][ref.loc[both, "mismatch_type"] == "keluhan_tersembunyi"].index)
+        my_k = set(mine.loc[both][mine.loc[both, "mismatch_type"] == "keluhan_tersembunyi"].index)
+        agree = len(ref_k & my_k)
+        rob = pd.DataFrame([
+            ("Model pembanding", ALGO_NAMES[args.algo]),
+            ("Tingkat kesesuaian OOF model pembanding (%)", round(100 * (1 - out["is_mismatch"].mean()), 2)),
+            ("Kandidat keluhan tersembunyi, model pembanding", len(my_k)),
+            ("Kandidat keluhan tersembunyi, Logistic Regression", len(ref_k)),
+            ("Ditandai oleh kedua model", agree),
+            ("Kesepakatan (% dari kandidat Logistic Regression)", round(100 * agree / max(len(ref_k), 1), 1)),
+        ], columns=["ukuran", "nilai"])
+        save_table(rob, f"oof_kekokohan{suffix}.csv")
+        print(rob.to_string(index=False))
 
 
 if __name__ == "__main__":
